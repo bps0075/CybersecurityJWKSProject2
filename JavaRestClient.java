@@ -1,6 +1,6 @@
 // Simple Java REST Client
 
-import java.io.IOException;
+/*import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -100,4 +100,4 @@ public class JavaRestClient {
             System.out.println("Wrong password.");
         }
     }
-}
+}*/
