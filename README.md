@@ -1,4 +1,4 @@
-# CybersecurityProject1
+# Cybersecurity Project 1
 ## Name
 * Brandon Sharp
 ## Goals
