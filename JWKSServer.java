@@ -1,97 +1,6 @@
 //Brandon Sharp, CSCS 3550
 //Project 1: Creating a basic Restful JWKS Server
 
-/*import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpServer;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-public class JWKSServer {
-    //Static Variables
-    private static final String HOSTNAME = "localhost"; // The hostname
-    private static final int PORT = 8080; // The port number
-    private static final int BACKLOG = 1;  // the backlog
-
-    private static final String ALLOW_HEADER = "Allow";
-    private static final String HEADER_CONTENT_TYPE = "Content-Type";
-
-    private static final Charset CHARSET = StandardCharsets.UTF_8;
-
-    private static final int STATUS_OK = 200;
-    private static final int STATUS_METHOD_NOT_ALLOWED = 405;
-
-    private static final int NO_RESPONSE_LENGTH = -1;
-
-    private static final String METHOD_GET = "GET";
-    private static final String METHOD_OPTIONS = "OPTIONS";
-    private static final String ALLOWED_METHODS = METHOD_GET + "," + METHOD_OPTIONS;
-
-    public static void main(final String... args) throws IOException {
-        final HttpServer server = HttpServer.create(new InetSocketAddress(HOSTNAME, PORT), BACKLOG);
-        server.createContext("/func1", he -> {
-            try {
-                final Headers headers = he.getResponseHeaders();
-                final String requestMethod = he.getRequestMethod().toUpperCase();
-                switch (requestMethod) {
-                    case METHOD_GET:
-                        final Map<String, List<String>> requestParameters = getRequestParameters(he.getRequestURI()); //requests the URI
-                        // do something with the request parameters
-                        final String responseBody = "['hello world!']";
-                        headers.set(HEADER_CONTENT_TYPE, String.format("application/json; charset=%s", CHARSET));
-                        final byte[] rawResponseBody = responseBody.getBytes(CHARSET);
-                        he.sendResponseHeaders(STATUS_OK, rawResponseBody.length);
-                        he.getResponseBody().write(rawResponseBody);
-                        break;
-                    case METHOD_OPTIONS:
-                        headers.set(ALLOW_HEADER, ALLOWED_METHODS);
-                        he.sendResponseHeaders(STATUS_OK, NO_RESPONSE_LENGTH);
-                        break;
-                    default:
-                        headers.set(ALLOW_HEADER, ALLOWED_METHODS);
-                        he.sendResponseHeaders(STATUS_METHOD_NOT_ALLOWED, NO_RESPONSE_LENGTH);
-                        break;
-                }
-            } finally {
-                he.close();
-            }
-        });
-        server.start();
-    }
-
-    private static Map<String, List<String>> getRequestParameters(final URI requestUri) {
-        final Map<String, List<String>> requestParameters = new LinkedHashMap<>();
-        final String requestQuery = requestUri.getRawQuery();
-        if (requestQuery != null) {
-            final String[] rawRequestParameters = requestQuery.split("[&;]", -1);
-            for (final String rawRequestParameter : rawRequestParameters) {
-                final String[] requestParameter = rawRequestParameter.split("=", 2);
-                final String requestParameterName = decodeUrlComponent(requestParameter[0]);
-                requestParameters.putIfAbsent(requestParameterName, new ArrayList<>());
-                final String requestParameterValue = requestParameter.length > 1 ? decodeUrlComponent(requestParameter[1]) : null;
-                requestParameters.get(requestParameterName).add(requestParameterValue);
-            }
-        }
-        return requestParameters;
-    }
-
-    private static String decodeUrlComponent(final String urlComponent) {
-        try {
-            return URLDecoder.decode(urlComponent, CHARSET.name());
-        } catch (final UnsupportedEncodingException ex) {
-            throw new InternalError(ex);
-        }
-    }
-}*/
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -105,14 +14,14 @@ import java.security.KeyPairGenerator;
 //import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
-//import java.time.Instant;
+import java.time.Instant;
 
-//import io.jsonwebtoken.Jwts;
-//import io.jsonwebtoken.SignatureAlgorithm;
-//import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 public class JWKSServer {
-    //private static final String SECRET_KEY = "your-secret-key"; //Change this to your own secret key
+    private static final String SECRET_KEY = "your-secret-key"; //Change this to your own secret key
     public static void main(String[] args) throws IOException {
         //This function is the first step to creating and authenticating the server
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
@@ -146,9 +55,9 @@ public class JWKSServer {
                 e.printStackTrace();
                 return null;
             }
-//            // Get the public and private keys from the key pair
-//            PublicKey publicKey = keyPair.getPublic();
-//            PrivateKey privateKey = keyPair.getPrivate();
+            //Get the public and private keys from the key pair
+//          PublicKey publicKey = keyPair.getPublic();
+//          PrivateKey privateKey = keyPair.getPrivate();
         }
 
         private String buildJWKSResponse(KeyPair keyPair) {
@@ -174,20 +83,25 @@ public class JWKSServer {
             // Generate a JWT token with an expiration time
 //            String token = generateJWTWithExpiry();
 //            sendResponse(exchange, token, 200);
-            sendResponse(exchange, "Authentication endpoint", 200);
+//            sendResponse(exchange, "Authentication endpoint", 200);
+            String allowExpiredParam = exchange.getRequestHeaders().getFirst("Allow-Expired");
+            boolean allowExpired = "true".equalsIgnoreCase(allowExpiredParam);
+            String token = generateJWTWithExpiry(allowExpired);
+            sendResponse(exchange, token, 200);
         }
 
-//        private String generateJWTWithExpiry() {
-//            Instant now = Instant.now();
-//            Instant expirationTime = now.plusSeconds(3600); // Token expires in 1 hour
-//
-//            return Jwts.builder()
-//                    .setSubject("user123") // Set subject/username as needed
-//                    .setIssuedAt(java.util.Date.from(now))
-//                    .setExpiration(java.util.Date.from(expirationTime))
-//                    .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Change to your preferred algorithm and key
-//                    .compact();
-//        }
+        private String generateJWTWithExpiry(boolean allowExpired) {
+            Instant now = Instant.now();
+            Instant expirationTime = allowExpired ? now.minusSeconds(3600) : now.plusSeconds(3600); // Token expires in 1 hour or is already expired
+            //Instant expirationTime = now.plusSeconds(3600); // Token expires in 1 hour
+
+            return Jwts.builder()
+                .setSubject("user123") //Set subject/username as needed
+                .setIssuedAt(java.util.Date.from(now))
+                .setExpiration(java.util.Date.from(expirationTime))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY) //Change to preferred algorithm and key
+                .compact();
+        }
     }
 
     private static void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
