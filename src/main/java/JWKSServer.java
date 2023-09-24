@@ -18,7 +18,7 @@ import java.time.Instant;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+//import io.jsonwebtoken.security.Keys;
 
 public class JWKSServer {
     private static final String SECRET_KEY = "your-secret-key"; //Change this to your own secret key
@@ -41,8 +41,13 @@ public class JWKSServer {
             }
             //sendResponse(exchange, "{\"keys\":[]}", 200);
             KeyPair keyPair = generateRSAKeyPair(); //Generates an RSA key pair
-            String jwksResponse = buildJWKSResponse(keyPair); //Builds the JWKS JSON response
-            sendResponse(exchange, jwksResponse, 200); //Sends the JWKS response
+            if (keyPair != null) { //If not null then it continues
+                String jwksResponse = buildJWKSResponse(keyPair); //Builds the JWKS JSON response
+                sendResponse(exchange, jwksResponse, 200); //Sends the JWKS response
+            }
+            else {
+                sendResponse(exchange, "Key pair is null", 404); //Handles the null keyPair
+            }
         }
 
         private KeyPair generateRSAKeyPair() {
