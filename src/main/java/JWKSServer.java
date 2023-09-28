@@ -25,10 +25,11 @@ public class JWKSServer {
     public static void main(String[] args) throws IOException {
         //This function is the first step to creating and authenticating the server
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/.well-known/jwks.json", new JWKSHandler()); //Handles that website link
+        server.createContext("/.JWKSServer/jwks.json", new JWKSHandler()); //Handles that website link
         server.createContext("/auth", new AuthHandler()); //Creates the authenticator
         server.setExecutor(null); //Creates a default executor
         server.start();
+        //System.out.println("Server is running on port 8080..."); //Testing
     }
 
     static class JWKSHandler implements HttpHandler {
@@ -121,7 +122,7 @@ public class JWKSServer {
 }
 
 //Encodes your JWT
-
+//JSON Data
 /*let text = '{ "employees" : [' +
             '{ "firstName":"John" , "lastName":"Doe" },' +
             '{ "firstName":"Anna" , "lastName":"Smith" },' +
