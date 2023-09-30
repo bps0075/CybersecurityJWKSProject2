@@ -1,5 +1,11 @@
 //Brandon Sharp, CSCS 3550
 //Project 1: Creating a basic Restful JWKS Server
+import org.junit.Test;
+import static org.junit.Assert.*;
+//import static org.evosuite.runtime.EvoAssertions.*;
+//import org.evosuite.runtime.EvoRunner;
+//import org.evosuite.runtime.EvoRunnerParameters;
+import org.junit.runner.RunWith;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -21,7 +27,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 //import io.jsonwebtoken.security.Keys;
 
 public class JWKSServer {
+    public class MyStruct { //Contains fields
+        public String username;
+        public String password;
+        public MyStruct(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+    }
     private static final String SECRET_KEY = "your-secret-key"; //Change this to your own secret key
+    //@Test
     public static void main(String[] args) throws IOException {
         //This function is the first step to creating and authenticating the server
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
