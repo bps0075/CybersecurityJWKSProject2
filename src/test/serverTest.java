@@ -1,8 +1,12 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.evosuite.runtime.EvoRunner;
+import org.evosuite.runtime.EvoRunnerParameters;
+import org.junit.runner.RunWith;
 
-public class JWKSServerTest {
-    @Test
+@RunWith(EvoRunner.class) @EvoRunnerParameters(mockJVMNonDeterminism = true, useVFS = true, useVNET = true, resetStaticState = true, separateClassLoader = true, useJEE = true)
+public class serverTest {
+    @Test // used for testing
     public void testGenerateRSAKeyPair() {
         JWKSServer server = new JWKSServer();
         assertNotNull(server.generateRSAKeyPair());
@@ -19,7 +23,5 @@ public class JWKSServerTest {
         JWKSServer server = new JWKSServer();
         String token = server.generateJWTWithExpiry(false); // Check for a valid token
         assertNotNull(token);
-        // You can add more test cases for this method, like checking if the token is properly encoded.
     }
-    // Add more test methods for other functionalities in your JWKSServer class.
 }
