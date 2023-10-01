@@ -44,7 +44,7 @@ public class JWKSServer {
         server.createContext("/auth", new AuthHandler()); //Creates the authenticator
         server.setExecutor(null); //Creates a default executor
         server.start();
-        //System.out.println("Server is running on port 8080..."); //Testing
+        System.out.println("Server is running on port 8080....."); //Testing
     }
 
     static class JWKSHandler implements HttpHandler {

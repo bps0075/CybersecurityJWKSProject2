@@ -1,3 +1,5 @@
+//Brandon Sharp
+//This is a test client option that uses go code provided by Jacob Hochsteller
 package main
 
 import (
