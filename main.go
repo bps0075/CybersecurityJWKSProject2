@@ -18,7 +18,7 @@ import (
 
 const (
 	AuthEndpoint = "/auth"
-	JWKSEndpoint = "/.well-known/jwks.json"
+	JWKSEndpoint = "/.JWKSServer/jwks.json"
 )
 
 type grammar struct {
