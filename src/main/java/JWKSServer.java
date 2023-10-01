@@ -27,8 +27,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 //import io.jsonwebtoken.security.Keys;
 
 public class JWKSServer {
-    public class MyStruct { //Contains fields
-        public String username;
+    public class MyStruct { //Creates a class that acts like a struct
+        public String username; //Contains fields
         public String password;
         public MyStruct(String username, String password) {
             this.username = username;
