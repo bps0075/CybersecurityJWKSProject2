@@ -30,9 +30,11 @@ public class JWKSServer {
     public class MyStruct { //Creates a class that acts like a struct
         public String username; //Contains fields
         public String password;
-        public MyStruct(String username, String password) {
+        public String goodKID;
+        public MyStruct(String username, String password, String goodKID) {
             this.username = username;
             this.password = password;
+            this.goodKID = goodKID;
         }
     }
     private static final String SECRET_KEY = "your-secret-key"; //Change this to your own secret key
@@ -40,7 +42,7 @@ public class JWKSServer {
     public static void main(String[] args) throws IOException {
         //This function is the first step to creating and authenticating the server
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/.JWKSServer/jwks.json", new JWKSHandler()); //Handles that website link
+        server.createContext("/.well-known/jwks.json", new JWKSHandler()); //Handles that website link
         server.createContext("/auth", new AuthHandler()); //Creates the authenticator
         server.setExecutor(null); //Creates a default executor
         server.start();
