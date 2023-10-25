@@ -1,6 +1,6 @@
 
 //Brandon Sharp, CSCS 3550
-//Project 1: Creating a basic Restful JWKS Server
+//Project 2: Creating a extended JWKS Server from the basic Restful JWKS Server
 //import org.junit.Test;
 //import static org.junit.Assert.*;
 //import static org.evosuite.runtime.EvoAssertions.*;
