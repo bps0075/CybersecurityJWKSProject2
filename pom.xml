@@ -8,7 +8,7 @@
     <description>This helps with the basic restful JWKS server</description>
 
     <groupId>net.codejava</groupId>
-    <artifactId>CSCE3550Project1</artifactId>
+    <artifactId>CSCE3550Project2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
