@@ -6,10 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="CSCE3550Project2" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="CSCE3550Project1" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
