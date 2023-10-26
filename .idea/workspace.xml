@@ -4,22 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_9_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_9_6.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_9_6.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_jsonwebtoken_jjwt_0_9_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_jsonwebtoken_jjwt_api_0_11_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_evosuite_evosuite_standalone_runtime_1_0_6.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Commenting the test folder since it may be useless.">
+      <change afterPath="$PROJECT_DIR$/totally_not_my_privateKeys.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JWKSServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JWKSServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/serverTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +64,26 @@
       <option name="presentableId" value="Default" />
       <updated>1698290785990</updated>
     </task>
+    <task id="LOCAL-00001" summary="Testing the new folder with a push.">
+      <created>1698291162356</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1698291162356</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Commenting the test folder since it may be useless.">
+      <created>1698291255836</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1698291255836</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Testing the new folder with a push." />
+    <MESSAGE value="Commenting the test folder since it may be useless." />
+    <option name="LAST_COMMIT_MESSAGE" value="Commenting the test folder since it may be useless." />
   </component>
 </project>
