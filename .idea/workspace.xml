@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Commenting the test folder since it may be useless.">
-      <change afterPath="$PROJECT_DIR$/totally_not_my_privateKeys.db" afterDir="false" />
+    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JWKSServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JWKSServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,12 +36,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="JWKSServer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="JWKSServer" />
@@ -78,12 +74,20 @@
       <option name="project" value="LOCAL" />
       <updated>1698291255836</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities.">
+      <created>1698296326184</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698296326184</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Testing the new folder with a push." />
     <MESSAGE value="Commenting the test folder since it may be useless." />
-    <option name="LAST_COMMIT_MESSAGE" value="Commenting the test folder since it may be useless." />
+    <MESSAGE value="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities." />
   </component>
 </project>

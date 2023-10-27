@@ -12,7 +12,7 @@ import java.util.Base64;
 import java.time.Instant;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-//import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.Keys;
 
 // Project 2 imports
 import java.sql.Connection;
@@ -26,21 +26,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.math.BigInteger;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
 
 public class JWKSServer {
-    public class MyStruct { // Creates a class that acts like a struct
-        public String username; // Contains fields
-        public String password;
-        public String goodKID;
-
-        public MyStruct(String username, String password, String goodKID) {
-            this.username = username;
-            this.password = password;
-            this.goodKID = goodKID;
-        }
-    }
-
-    private static final String SECRET_KEY = "your-secret-key"; // Change this to your own secret key
+    //private static final String SECRET_KEY = "your-secret-key"; // Change this to your own secret key
+    //private static RsaJsonWebKey jwk = null;
+    //private static RsaJsonWebKey expiredJWK = null;
 
     public static void main(String[] args) throws IOException {
         // This function is the first step to creating and authenticating the server
@@ -108,7 +99,6 @@ public class JWKSServer {
             String token = generateJWTWithExpiry(allowExpired);
             sendResponse(exchange, token, 200);
         }
-
         private String generateJWTWithExpiry(boolean allowExpired) {
             // This function encodes the JWT
             Instant now = Instant.now();
@@ -118,15 +108,32 @@ public class JWKSServer {
             // P2: Retrieves the key pair from the database and checks if keyPair is null
             KeyPair keyPair = GetKeyPairFromDatabase();
             if (keyPair != null) {
+                /*try {
+                    RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+                    RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+
+                    // Creating a public and private key pair for signing and verifying the token
+                    Key signingKey = privateKey;
+                    Key verificationKey = publicKey;
+
+                    // Building and signing the JWT
+                    String token = Jwts.builder()
+                            .setSubject("user123") // The subject/username will be set as needed
+                            .setIssuedAt(java.util.Date.from(now))
+                            .setExpiration(java.util.Date.from(expirationTime))
+                            .signWith(SignatureAlgorithm.RS256, signingKey) // Using RS256 for RSA keys
+                            .compact();
+
+                    return token;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // Handles key conversion or signing errors here
+                    return "Error generating the JWT";
+                }*/
                 RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
                 String secretKey = Base64.getUrlEncoder().withoutPadding().encodeToString(publicKey.getModulus().toByteArray());
-
-                return Jwts.builder()
-                        .setSubject("user123") // The subject/username will be set as needed
-                        .setIssuedAt(java.util.Date.from(now))
-                        .setExpiration(java.util.Date.from(expirationTime))
-                        .signWith(SignatureAlgorithm.HS256, secretKey) // Using the public key as the secret key
-                        .compact();
+                // The subject/username will be set as needed, using RS256 for RSA keys, and using the public key as the secret key
+                return Jwts.builder().setSubject("user123").setIssuedAt(java.util.Date.from(now)).setExpiration(java.util.Date.from(expirationTime)).signWith(SignatureAlgorithm.RS256, secretKey).compact();
             }
             else {
                 // If the key pair is not found in the database
@@ -134,7 +141,6 @@ public class JWKSServer {
             }
         }
     }
-
     private static void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
         // This function prepares to send a response
         exchange.getResponseHeaders().add("Content-Type", "application/json");
@@ -143,6 +149,7 @@ public class JWKSServer {
         os.write(response.getBytes());
         os.close();
     }
+
 
     private static void StoreKeyPairInDatabase(KeyPair keyPair) {
         // P2 function: This function stores the key pair into the database
@@ -156,7 +163,7 @@ public class JWKSServer {
                 String exponent = Base64.getUrlEncoder().withoutPadding()
                         .encodeToString(publicKey.getPublicExponent().toByteArray());
 
-                String insertQuery = "INSERT INTO public_keys (modulus, exponent) VALUES (?, ?)";
+                String insertQuery = "INSERT INTO keys (modulus, exponent) VALUES (?, ?)";
                 try (PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
                     pstmt.setString(1, modulus);
                     pstmt.setString(2, exponent);
@@ -181,7 +188,7 @@ public class JWKSServer {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db"); // Connects with the db file
             if (conn != null) {
-                String selectQuery = "SELECT modulus, exponent FROM public_keys";
+                String selectQuery = "SELECT modulus, exponent FROM keys";
                 try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(selectQuery)) {
                     if (rs.next()) {
                         byte[] modulusBytes = Base64.getUrlDecoder().decode(rs.getString("modulus"));
@@ -214,3 +221,179 @@ public class JWKSServer {
         return null;
     }
 }
+
+/*import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.security.*;
+import java.security.interfaces.RSAPublicKey;
+import java.util.Base64;
+import java.util.Date;
+import java.time.Instant;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.math.BigInteger;
+import java.security.interfaces.RSAPublicKey;
+
+public class JWKSServer {
+    public static void main(String[] args) throws IOException {
+        // This function is the first step to creating and authenticating the server
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        server.createContext("/.well-known/jwks.json", new JWKSHandler()); // Handles the JWKS endpoint
+        server.createContext("/auth", new AuthHandler()); // Creates the authenticator
+        server.setExecutor(null); // Creates a default executor
+        server.start();
+        System.out.println("Server is running on port 8080....."); // Testing
+    }
+
+    static class JWKSHandler implements HttpHandler {
+        // This function handles HTTP GET requests for JWKS
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+                sendResponse(exchange, "Method Not Allowed", 405);
+                return;
+            }
+            KeyPair keyPair = generateRSAKeyPair(); // Generates an RSA key pair
+            if (keyPair != null) {
+                String jwksResponse = buildJWKSResponse(keyPair); // Builds the JWKS JSON response
+                sendResponse(exchange, jwksResponse, 200); // Sends the JWKS response
+            } else {
+                sendResponse(exchange, "Key pair is null", 404); // Handles the null keyPair
+            }
+        }
+
+        private KeyPair generateRSAKeyPair() {
+            try {
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+                keyPairGenerator.initialize(2048);
+                return keyPairGenerator.generateKeyPair();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        private String buildJWKSResponse(KeyPair keyPair) {
+            RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+            String modulus = Base64.getUrlEncoder().withoutPadding().encodeToString(publicKey.getModulus().toByteArray());
+            String exponent = Base64.getUrlEncoder().withoutPadding().encodeToString(publicKey.getPublicExponent().toByteArray());
+            return String.format("{\"keys\":[{\"kty\":\"RSA\",\"kid\":\"1\",\"n\":\"%s\",\"e\":\"%s\"}]}", modulus, exponent);
+        }
+    }
+    private static class AuthHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+                sendResponse(exchange, "Method Not Found", 405);
+                return;
+            }
+
+            String allowExpiredParam = exchange.getRequestHeaders().getFirst("Allow-Expired");
+            boolean allowExpired = "true".equalsIgnoreCase(allowExpiredParam);
+            String token = generateJWTWithExpiry(allowExpired);
+            sendResponse(exchange, token, 200);
+        }
+
+        /*private String generateJWTWithExpiry(boolean allowExpired) {
+            Instant now = Instant.now();
+            Instant expirationTime = allowExpired ? now.minusSeconds(3600) : now.plusSeconds(3600);
+            KeyPair keyPair = GetKeyPairFromDatabase();
+
+            if (keyPair != null) {
+                RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+                RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+
+                String token = Jwts.builder()
+                        .setSubject("user123") // The subject/username will be set as needed
+                        .setIssuedAt(java.util.Date.from(now))
+                        .setExpiration(java.util.Date.from(expirationTime))
+                        .signWith(SignatureAlgorithm.RS256, privateKey) // Using RS256 for RSA keys
+                        .compact();
+
+                return token;
+            } else {
+                return "Key pair not found";
+            }
+        }*/
+/*        private String generateJWTWithExpiry(boolean allowExpired) {
+            Instant now = Instant.now();
+            Instant expirationTime = allowExpired ? now.minusSeconds(3600) : now.plusSeconds(3600);
+
+            KeyPair keyPair = GetKeyPairFromDatabase();
+            if (keyPair != null) {
+                RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+                RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+
+                String token = Jwts.builder()
+                        .setSubject("user123")
+                        .setIssuedAt(Date.from(now))
+                        .setExpiration(Date.from(expirationTime))
+                        .signWith(SignatureAlgorithm.RS256, privateKey) // Using RS256 for RSA keys
+                        .compact();
+
+                return token;
+            } else {
+                return "Key pair not found";
+            }
+        }
+
+    }
+
+    private static void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
+        exchange.sendResponseHeaders(statusCode, response.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    private static KeyPair GetKeyPairFromDatabase() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db");
+            if (conn != null) {
+                String selectQuery = "SELECT modulus, exponent FROM keys";
+                try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(selectQuery)) {
+                    if (rs.next()) {
+                        byte[] modulusBytes = Base64.getUrlDecoder().decode(rs.getString("modulus"));
+                        byte[] exponentBytes = Base64.getUrlDecoder().decode(rs.getString("exponent"));
+
+                        RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(new BigInteger(1, modulusBytes), new BigInteger(1, exponentBytes));
+
+                        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+                        PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+
+                        return new KeyPair(publicKey, null);
+                    }
+                }
+            }
+        } catch (SQLException | InvalidKeySpecException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+}*/
