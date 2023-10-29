@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities.">
+    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JWKSServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JWKSServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,13 +82,21 @@
       <option name="project" value="LOCAL" />
       <updated>1698296326184</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file.">
+      <created>1698440590528</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1698440590528</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Testing the new folder with a push." />
     <MESSAGE value="Commenting the test folder since it may be useless." />
     <MESSAGE value="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities." />
+    <MESSAGE value="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file." />
+    <option name="LAST_COMMIT_MESSAGE" value="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file." />
   </component>
 </project>
