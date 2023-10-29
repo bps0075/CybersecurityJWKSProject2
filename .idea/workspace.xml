@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file.">
+    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress.">
+      <change afterPath="$PROJECT_DIR$/Project2RubricPoints.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slf4j-api-1.7.36.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sqlite-jdbc-3.43.2.1.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JWKSServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JWKSServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +43,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="JWKSServer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="JWKSServer" />
@@ -89,14 +99,33 @@
       <option name="project" value="LOCAL" />
       <updated>1698440590528</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress.">
+      <created>1698551931473</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698551931473</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Testing the new folder with a push." />
     <MESSAGE value="Commenting the test folder since it may be useless." />
     <MESSAGE value="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities." />
     <MESSAGE value="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file." />
-    <option name="LAST_COMMIT_MESSAGE" value="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file." />
+    <MESSAGE value="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress." />
   </component>
 </project>
