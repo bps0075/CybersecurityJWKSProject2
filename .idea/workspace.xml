@@ -4,21 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress.">
-      <change afterPath="$PROJECT_DIR$/Project2RubricPoints.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/slf4j-api-1.7.36.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sqlite-jdbc-3.43.2.1.jar" afterDir="false" />
+    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Modifications to creating the database by creating catch areas and private variables.">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/slf4j_api_1_7_36.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sqlite_jdbc_3_43_2_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/JWKSServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JWKSServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$AuthHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer$JWKSHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/totally_not_my_privateKeys.db" beforeDir="false" afterPath="$PROJECT_DIR$/totally_not_my_privateKeys.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -47,12 +53,20 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/Users/bpsha/Desktop/CSCE-3550 (Cybersecurity)/CybersecurityJWKSProject2/slf4j-api-1.7.36.jar",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
+    "project.structure.side.proportion": "0.32528734",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\bpsha\Desktop\CSCE-3550 (Cybersecurity)\CybersecurityJWKSProject2\src\main\java" />
+      <recent name="C:\Users\bpsha\Desktop\CSCE-3550 (Cybersecurity)\CybersecurityJWKSProject2" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="JWKSServer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="JWKSServer" />
@@ -106,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698551931473</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Modifications to creating the database by creating catch areas and private variables.">
+      <created>1698612141449</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698612141449</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -126,6 +147,7 @@
     <MESSAGE value="Added functionality to the functions handle and generateJWTWithExpiry. Also created 2 new functions called StoreKeyPairInDatabase and GetKeyPairFromDatabase which both deal with database functionalities." />
     <MESSAGE value="Tried to fix errors, but have lots of extra code right now. Also added the gradebot compliler file." />
     <MESSAGE value="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress." />
+    <MESSAGE value="Modifications to creating the database by creating catch areas and private variables." />
+    <option name="LAST_COMMIT_MESSAGE" value="Modifications to creating the database by creating catch areas and private variables." />
   </component>
 </project>

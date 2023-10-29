@@ -59,42 +59,27 @@ public class JWKSServer {
         expiredJWK = RsaJwkGenerator.generateJwk(2048);
         expiredJWK.setKeyId("expiredKey");
 
-        //String url = "jdbc:sqlite:totally_not_my_privateKeys.db"))"
-        // Initializes the SQLite database
-        /*try (Connection conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/bpsha/Desktop/CSCE-3550 (Cybersecurity)/CybersecurityJWKSProject2/totally_not_my_privateKeys.db")) {
-            Statement statement = conn.createStatement();
-            statement.execute("CREATE TABLE IF NOT EXISTS keys (kid INTEGER PRIMARY KEY AUTOINCREMENT, key BLOB NOT NULL, exp INTEGER NOT NULL)");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }*/
         // Below initializes the database connection for Project 2
-        //c = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db");
- /*       String dbUrl = "jdbc:sqlite:totally_not_my_privateKeys.db";
-        //String jdbcUrl = "jdbc:sqlite:totally_not_my_privateKeys.db";
-        //String jdbcUrl = "jdbc:mysql://localhost:8080/totally_not_my_privateKeys.db";
-        //String jdbcUrl = "jdbc:mysql://localhost:3306/totally_not_my_privateKeys.db";
-        String dbUsername = "test_username";
-        String dbPassword = "test_password";
-
-        try {
-            c = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
-            //c = DriverManager.getConnection(jdbcUrl, dbUsername, dbPassword);
-            System.out.println("Database connection created!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to connect to the database.");
-        }*/
+        //String url = "jdbc:sqlite:totally_not_my_privateKeys.db";
+        //c = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db"); // Sets up the db connection
+        //statement = c.createStatement(); // Creates the statement
+        //statement.setQueryTimeout(30);  // sets timeout to 30 sec
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db");
-            //c = DriverManager.getConnection(dbUrl);
+            c = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db"); // Sets up the db connection
+            //c = DriverManager.getConnection(url);
+            statement = c.createStatement(); // Creates the statement
+            //statement.setQueryTimeout(30);  // sets timeout to 30 sec
+            statement.execute("CREATE TABLE IF NOT EXISTS keys (kid INTEGER PRIMARY KEY AUTOINCREMENT, key BLOB NOT NULL, exp INTEGER NOT NULL)");
             System.out.println("Database connection established.");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             System.err.println("Failed to connect to the database.");
-            //return; // Exits
+            return; // Exits
         }
+        //String rsaKeyData = "test_private_key"; // Getting column data
+        //String insertQuery = "INSERT INTO keys (kid) VALUES ('" + rsaKeyData + "')"; // SQL statement to insert the RSA key data
+        //tatement.execute(insertQuery);
 
         // This part is the first step to creating and authenticating the server
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
@@ -118,7 +103,7 @@ public class JWKSServer {
             //RsaJsonWebKey newKeyPair = RsaJwkGenerator.generateJwk(2048);
             //newKeyPair.setKeyId("newKey1");
             // P2: Stores the new key pair in the database
-            //           storeKeyPairInDatabase(jwk);
+            StoreKeyPairInDatabase(jwk);
             // P2: Generates a JSON Web Key Set (JWKS) response
             //JsonWebKeySet jsonWebKeySet = new JsonWebKeySet(newKeyPair);
             //String jwks = jsonWebKeySet.toJson();
@@ -143,10 +128,10 @@ public class JWKSServer {
             }
             // P2: Gets the key pair from the database
             String keyId = "newKey1"; // Replace with the appropriate key ID
-            //RsaJsonWebKey keyPair = getKeyPairFromDatabase(keyId);
-            /*RSAJsonWebKey keyPair = getKeyPairFromDatabase(keyId);
+            //RsaJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
+            PublicJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
 
-            if (keyPair == null) {
+            /*if (keyPair == null) {
                 // Handles the case when the key pair is not found in the database
                 h.sendResponseHeaders(404, -1); // 404 means Not Found
                 OutputStream os = h.getResponseBody();
@@ -193,11 +178,12 @@ public class JWKSServer {
         }
     }
 
-    /*private static void storeKeyPairInDatabase(RsaJsonWebKey keyPair) {
+    private static void StoreKeyPairInDatabase(RsaJsonWebKey keyPair) {
         // P2 function: This function stores the key pair into the SQLite database
         if (c != null) {
             try {
-                String insertQuery = "INSERT INTO jwks (kid, rsa_key) VALUES (?, ?)";
+                String insertQuery = "INSERT INTO keys (key, exp) VALUES (?)";
+                //String insertQuery = "INSERT INTO keys (kid, key) VALUES (?, ?)";
                 PreparedStatement preparedStatement = c.prepareStatement(insertQuery);
                 preparedStatement.setString(1, keyPair.getKeyId());
                 preparedStatement.setString(2, keyPair.toJson());
@@ -212,18 +198,17 @@ public class JWKSServer {
         }
     }
 
-    private static RsaJsonWebKey getKeyPairFromDatabase(String keyId) {
+    private static RsaJsonWebKey GetKeyPairFromDatabase(String keyId) {
         // P2 function: This function gets the key pair from the SQLite database
         if (c != null) {
             try {
-                String selectQuery = "SELECT rsa_key FROM jwks WHERE kid = ?";
+                String selectQuery = "SELECT key FROM keys WHERE kid = ?";
                 PreparedStatement preparedStatement = c.prepareStatement(selectQuery);
                 preparedStatement.setString(1, keyId);
-
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
-                    String keyJson = resultSet.getString("rsa_key");
+                    String keyJson = resultSet.getString("key");
                     PublicJsonWebKey.Factory.newPublicJwk(keyJson);
                     //return RsaJsonWebKey.Factory.newPublicJwk(keyJson); // RSA does not work
                 }
@@ -235,9 +220,9 @@ public class JWKSServer {
         }
         return null;
     }
-}*/
+}
 
-    private static void StoreKeyPairInDatabase(KeyPair keyPair) {
+ /*   private static void StoreKeyPairInDatabase(KeyPair keyPair) {
         // P2 function: This function stores the key pair into the database
         Connection conn = null;
         try {
@@ -306,4 +291,56 @@ public class JWKSServer {
         }
         return null;
     }
-}
+}*/
+
+
+/*import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class JWKSServer {
+    public static void main(String[] args)
+    {
+        Connection connection = null;
+        try
+        {
+            // create a database connection
+            connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+
+            statement.executeUpdate("drop table if exists person");
+            statement.executeUpdate("create table person (id integer, name string)");
+            statement.executeUpdate("insert into person values(1, 'leo')");
+            statement.executeUpdate("insert into person values(2, 'yui')");
+            ResultSet rs = statement.executeQuery("select * from person");
+            while(rs.next())
+            {
+                // read the result set
+                System.out.println("name = " + rs.getString("name"));
+                System.out.println("id = " + rs.getInt("id"));
+            }
+        }
+        catch(SQLException e)
+        {
+            // if the error message is "out of memory",
+            // it probably means no database file is found
+            System.err.println(e.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException e)
+            {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+    }
+}*/
