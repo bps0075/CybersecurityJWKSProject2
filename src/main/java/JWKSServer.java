@@ -189,7 +189,7 @@ public class JWKSServer {
                 preparedStatement.setString(2, GoodExpiry.toString()); // GoodExpiry is used as string
                 preparedStatement.executeUpdate(); // Executes the insert into the database
                 preparedStatement.close();
-                System.out.println(keyPair);
+                System.out.println("KeyPair variable is: " + keyPair); // Testing
                 System.out.println("Key pair stored in the database.");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -202,9 +202,9 @@ public class JWKSServer {
         // P2 function: This function gets the key pair from the SQLite database
         if (c != null) {
             try {
-                String selectQuery = "SELECT key FROM keys WHERE exp >= ?"; // Select query
+                //String selectQuery = "SELECT key FROM keys WHERE exp >= ?"; // Select query
                 //String selectQuery = "SELECT key FROM keys WHERE key = ?";
-                //String selectQuery = "SELECT key FROM keys WHERE kid = ?";
+                String selectQuery = "SELECT key FROM keys WHERE kid = ?";
                 PreparedStatement preparedStatement = c.prepareStatement(selectQuery); // Prepares for the statement to be executed
                 String x = Integer.toString((int) (System.currentTimeMillis() / 1000)); // x is the time as a string
                 preparedStatement.setString(1, x);
