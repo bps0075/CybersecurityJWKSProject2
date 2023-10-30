@@ -1,4 +1,4 @@
-/*import org.junit.Test;
+import org.junit.Test;
 import static org.junit.Assert.*;
 import org.evosuite.runtime.EvoRunner;
 import org.evosuite.runtime.EvoRunnerParameters;
@@ -11,7 +11,7 @@ public class serverTest { //This will test the JWKSServer.java file by calling t
     //    JWKSServer server = new JWKSServer();
     //    assertNotNull(server.MyStruct()); //Checks if the RSA key pair was generated
     //}
-    @Test // used for testing
+    /*@Test // used for testing
     public void testGenerateRSAKeyPair() { //Will test the struct class
         JWKSServer server = new JWKSServer();
         assertNotNull(server.generateRSAKeyPair()); //Checks if the RSA key pair was generated
@@ -22,11 +22,17 @@ public class serverTest { //This will test the JWKSServer.java file by calling t
         JWKSServer server = new JWKSServer();
         assertNotNull(server.buildJWKSResponse(server.generateRSAKeyPair())); //Checks for a JWKS response
     }
-
+*/
     @Test
-    public void testGenerateJWTWithExpiry() { //Will Test
+    public void testStoreKeyPairInDatabase() { //Will Test
         JWKSServer server = new JWKSServer();
-        String token = server.generateJWTWithExpiry(false); // Checks for a valid token
+        String token = server.StoreKeyPairInDatabase(RsaJsonWebKey keyPair); // Checks for storing the query
         assertNotNull(token);
     }
-}*/
+    @Test
+    public void testGetKeyPairInDatabase() { //Will Test
+        JWKSServer server = new JWKSServer();
+        String token = server.GetKeyPairInDatabase(); // Checks for getting the query
+        assertNotNull(token);
+    }
+}

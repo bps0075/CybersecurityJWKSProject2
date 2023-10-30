@@ -71,7 +71,7 @@ public class JWKSServer {
             statement = c.createStatement(); // Creates the statement
             //statement.setQueryTimeout(30);  // sets timeout to 30 sec
             statement.execute("CREATE TABLE IF NOT EXISTS keys (kid INTEGER PRIMARY KEY AUTOINCREMENT, key BLOB NOT NULL, exp INTEGER NOT NULL)");
-            System.out.println("Database connection established.");
+            System.out.println("Database connection created!");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             System.err.println("Failed to connect to the database.");
@@ -130,8 +130,8 @@ public class JWKSServer {
             }
             // P2: Gets the key pair from the database
             String keyId = "newKey1"; // Replace with the appropriate key ID
-            //RsaJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
-            PublicJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
+            RsaJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
+            //PublicJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
 
             // P2: Checks if the key pair is null
             /*if (keyPair == null) {
@@ -212,8 +212,8 @@ public class JWKSServer {
 
                 if (resultSet.next()) {
                     String keyJson = resultSet.getString("key");
-                    PublicJsonWebKey.Factory.newPublicJwk(keyJson);
-                    //return RsaJsonWebKey.Factory.newPublicJwk(keyJson); // RSA does not work
+                    //return (RsaJsonWebKey) PublicJsonWebKey.Factory.newPublicJwk(keyJson);
+                    return (RsaJsonWebKey) RsaJsonWebKey.Factory.newPublicJwk(keyJson); // RSA may not work
                 }
                 preparedStatement.close();
             } catch (SQLException | JoseException e) {
