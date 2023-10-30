@@ -6,7 +6,6 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-
 import org.jose4j.jwk.JsonWebKeySet;
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jwk.RsaJwkGenerator;
@@ -98,7 +97,6 @@ public class JWKSServer {
                 h.sendResponseHeaders(405, -1); // 405 means Method Not Allowed
                 return;
             }
-
             // P2: Generates a new key pair
             //RsaJsonWebKey newKeyPair = RsaJwkGenerator.generateJwk(2048);
             //newKeyPair.setKeyId("newKey1");

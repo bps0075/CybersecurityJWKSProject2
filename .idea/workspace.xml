@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Modifications to an ouput line and hopefully added correct testing suites for the store and get key pair functions.">
+    <list default="true" id="67fd2174-29ab-4bb9-bfd3-8828a73dd458" name="Changes" comment="Added testing suites for the JWKSHandler and AuthHandler classes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/JWKSServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/JWKSServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/serverTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/serverTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/JWKSServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/JWKSServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/totally_not_my_privateKeys.db" beforeDir="false" afterPath="$PROJECT_DIR$/totally_not_my_privateKeys.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,7 +154,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698625323309</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added testing suites for the JWKSHandler and AuthHandler classes.">
+      <created>1698633740413</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1698633740413</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -180,6 +183,7 @@
     <MESSAGE value="Finally got the parts /auth valid JWT authN and Valid JWK found in JWKS to work. Database existing andd database query using parameters is still in progress." />
     <MESSAGE value="Modifications to creating the database by creating catch areas and private variables." />
     <MESSAGE value="Modifications to an ouput line and hopefully added correct testing suites for the store and get key pair functions." />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifications to an ouput line and hopefully added correct testing suites for the store and get key pair functions." />
+    <MESSAGE value="Added testing suites for the JWKSHandler and AuthHandler classes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added testing suites for the JWKSHandler and AuthHandler classes." />
   </component>
 </project>
