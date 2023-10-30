@@ -33,6 +33,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.math.BigInteger;
 import java.security.PublicKey;
+import java.time.LocalTime;
 
 // Extras
 import java.security.*;
@@ -51,9 +52,11 @@ public class JWKSServer {
     private static RsaJsonWebKey expiredJWK = null;
     private static Connection c = null; // Private variable for the P2 database connection
     private static Statement statement = null; // This will only be used for needed statements
+    private static String GoodExpiry = ""; // Expiry
 
     public static void main(String[] args) throws Exception {
         // Generates an RSA key pair, which will be used for signing and verification of the JWT and wrapped in a JWK
+        GoodExpiry = Integer.toString((int) ((System.currentTimeMillis() / 1000) + 3600));
         jwk = RsaJwkGenerator.generateJwk(2048);
         jwk.setKeyId("goodKey1");
         expiredJWK = RsaJwkGenerator.generateJwk(2048);
@@ -77,9 +80,6 @@ public class JWKSServer {
             System.err.println("Failed to connect to the database.");
             return; // Exits
         }
-        //String rsaKeyData = "test_private_key"; // Getting column data
-        //String insertQuery = "INSERT INTO keys (kid) VALUES ('" + rsaKeyData + "')"; // SQL statement to insert the RSA key data
-        //tatement.execute(insertQuery);
 
         // This part is the first step to creating and authenticating the server
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
@@ -187,10 +187,11 @@ public class JWKSServer {
             try {
                 String insertQuery = "INSERT INTO keys (key, exp) VALUES (?, ?)"; // Insert query
                 PreparedStatement preparedStatement = c.prepareStatement(insertQuery);
-                preparedStatement.setString(1, keyPair.getKeyId());
-                preparedStatement.setString(2, keyPair.toJson());
+                preparedStatement.setString(1, keyPair.toJson());
+                preparedStatement.setString(2, GoodExpiry.toString()); // GoodExpiry is used as string
                 preparedStatement.executeUpdate(); // Executes the insert into the database
                 preparedStatement.close();
+                System.out.println(keyPair);
                 System.out.println("Key pair stored in the database.");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -203,11 +204,12 @@ public class JWKSServer {
         // P2 function: This function gets the key pair from the SQLite database
         if (c != null) {
             try {
-                String selectQuery = "SELECT key FROM keys WHERE exp = ?"; // Select query
+                String selectQuery = "SELECT key FROM keys WHERE exp >= ?"; // Select query
                 //String selectQuery = "SELECT key FROM keys WHERE key = ?";
                 //String selectQuery = "SELECT key FROM keys WHERE kid = ?";
                 PreparedStatement preparedStatement = c.prepareStatement(selectQuery); // Prepares for the statement to be executed
-                preparedStatement.setString(1, keyId);
+                String x = Integer.toString((int) (System.currentTimeMillis() / 1000)); // x is the time as a string
+                preparedStatement.setString(1, x);
                 ResultSet resultSet = preparedStatement.executeQuery(); // Executes the select statement
 
                 if (resultSet.next()) {
