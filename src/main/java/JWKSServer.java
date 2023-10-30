@@ -46,7 +46,7 @@ import io.jsonwebtoken.security.Keys;
 import org.jose4j.jwk.PublicJsonWebKey;
 
 public class JWKSServer {
-    //private static final String SECRET_KEY = "your-secret-key"; // Change this to your own secret key
+    //private static final String SECRET_KEY = "your-secret-key"; // Secret key
     private static RsaJsonWebKey jwk = null;
     private static RsaJsonWebKey expiredJWK = null;
     private static Connection c = null; // Private variable for the P2 database connection
@@ -87,7 +87,7 @@ public class JWKSServer {
         server.createContext("/auth", new AuthHandler()); // Creates the authenticator
         server.setExecutor(null); // Creates a default executor
         server.start();
-        System.out.println("Server is running on port 8080....."); // Testing
+        System.out.println("Server is running on port 8080....."); // Testing the server
     }
 
     static class JWKSHandler implements HttpHandler {
@@ -102,8 +102,10 @@ public class JWKSServer {
             // P2: Generates a new key pair
             //RsaJsonWebKey newKeyPair = RsaJwkGenerator.generateJwk(2048);
             //newKeyPair.setKeyId("newKey1");
+
             // P2: Stores the new key pair in the database
             StoreKeyPairInDatabase(jwk);
+            System.out.println("Got past the storing part"); // Testing
             // P2: Generates a JSON Web Key Set (JWKS) response
             //JsonWebKeySet jsonWebKeySet = new JsonWebKeySet(newKeyPair);
             //String jwks = jsonWebKeySet.toJson();
@@ -131,6 +133,7 @@ public class JWKSServer {
             //RsaJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
             PublicJsonWebKey keyPair = GetKeyPairFromDatabase(keyId);
 
+            // P2: Checks if the key pair is null
             /*if (keyPair == null) {
                 // Handles the case when the key pair is not found in the database
                 h.sendResponseHeaders(404, -1); // 404 means Not Found
@@ -148,7 +151,7 @@ public class JWKSServer {
 
             JsonWebSignature jws = new JsonWebSignature();
             jws.setKeyIdHeaderValue(jwk.getKeyId());
-            jws.setKey(jwk.getPrivateKey());
+            jws.setKey(jwk.getPrivateKey()); // Sets the key as private
 
             // Checks for the expired query parameter
             if (h.getRequestURI().getQuery() != null && h.getRequestURI().getQuery().contains("expired=true")) {
@@ -156,7 +159,7 @@ public class JWKSServer {
                 expirationTime.addSeconds(-10 * 60); // Subtracts 10 minutes
                 claims.setExpirationTime(expirationTime);
                 jws.setKeyIdHeaderValue(expiredJWK.getKeyId());
-                jws.setKey(expiredJWK.getPrivateKey());
+                jws.setKey(expiredJWK.getPrivateKey()); // Sets this expiry as private
             }
 
             jws.setPayload(claims.toJson()); // Sets the payload
@@ -174,7 +177,7 @@ public class JWKSServer {
             h.sendResponseHeaders(200, jwt.length()); // 200 means OK
             OutputStream os = h.getResponseBody();
             os.write(jwt.getBytes());
-            os.close();
+            os.close(); // Closes the output stream so that it does not get in the way
         }
     }
 
@@ -182,13 +185,11 @@ public class JWKSServer {
         // P2 function: This function stores the key pair into the SQLite database
         if (c != null) {
             try {
-                String insertQuery = "INSERT INTO keys (key, exp) VALUES (?)";
-                //String insertQuery = "INSERT INTO keys (kid, key) VALUES (?, ?)";
+                String insertQuery = "INSERT INTO keys (key, exp) VALUES (?, ?)"; // Insert query
                 PreparedStatement preparedStatement = c.prepareStatement(insertQuery);
                 preparedStatement.setString(1, keyPair.getKeyId());
                 preparedStatement.setString(2, keyPair.toJson());
-
-                preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate(); // Executes the insert into the database
                 preparedStatement.close();
                 System.out.println("Key pair stored in the database.");
             } catch (SQLException e) {
@@ -202,10 +203,12 @@ public class JWKSServer {
         // P2 function: This function gets the key pair from the SQLite database
         if (c != null) {
             try {
-                String selectQuery = "SELECT key FROM keys WHERE kid = ?";
-                PreparedStatement preparedStatement = c.prepareStatement(selectQuery);
+                String selectQuery = "SELECT key FROM keys WHERE exp = ?"; // Select query
+                //String selectQuery = "SELECT key FROM keys WHERE key = ?";
+                //String selectQuery = "SELECT key FROM keys WHERE kid = ?";
+                PreparedStatement preparedStatement = c.prepareStatement(selectQuery); // Prepares for the statement to be executed
                 preparedStatement.setString(1, keyId);
-                ResultSet resultSet = preparedStatement.executeQuery();
+                ResultSet resultSet = preparedStatement.executeQuery(); // Executes the select statement
 
                 if (resultSet.next()) {
                     String keyJson = resultSet.getString("key");
@@ -221,126 +224,3 @@ public class JWKSServer {
         return null;
     }
 }
-
- /*   private static void StoreKeyPairInDatabase(KeyPair keyPair) {
-        // P2 function: This function stores the key pair into the database
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db"); // Connects with the db file
-            if (conn != null) {
-                RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-                String modulus = Base64.getUrlEncoder().withoutPadding()
-                        .encodeToString(publicKey.getModulus().toByteArray());
-                String exponent = Base64.getUrlEncoder().withoutPadding()
-                        .encodeToString(publicKey.getPublicExponent().toByteArray());
-
-                String insertQuery = "INSERT INTO keys (modulus, exponent) VALUES (?, ?)";
-                try (PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
-                    pstmt.setString(1, modulus);
-                    pstmt.setString(2, exponent);
-                    pstmt.executeUpdate();
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    private static KeyPair GetKeyPairFromDatabase() {
-        // P2 function: This function gets the key pair from the database
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:totally_not_my_privateKeys.db"); // Connects with the db file
-            if (conn != null) {
-                String selectQuery = "SELECT modulus, exponent FROM keys";
-                try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(selectQuery)) {
-                    if (rs.next()) {
-                        byte[] modulusBytes = Base64.getUrlDecoder().decode(rs.getString("modulus"));
-                        byte[] exponentBytes = Base64.getUrlDecoder().decode(rs.getString("exponent"));
-
-                        RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(new BigInteger(1, modulusBytes), new BigInteger(1, exponentBytes));
-
-                        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-                        PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
-
-                        // You need the corresponding private key to create a full KeyPair,
-                        // but since this is just for verifying JWT, you only need the public key.
-                        return new KeyPair(publicKey, null);
-                    }
-                } catch (NoSuchAlgorithmException e) { // This catch clause is here for getInstance()
-                    throw new RuntimeException(e);
-                }
-            }
-        } catch (SQLException | InvalidKeySpecException e) { // Catch clauses for these two things
-            e.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-}*/
-
-
-/*import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-public class JWKSServer {
-    public static void main(String[] args)
-    {
-        Connection connection = null;
-        try
-        {
-            // create a database connection
-            connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-            statement.executeUpdate("drop table if exists person");
-            statement.executeUpdate("create table person (id integer, name string)");
-            statement.executeUpdate("insert into person values(1, 'leo')");
-            statement.executeUpdate("insert into person values(2, 'yui')");
-            ResultSet rs = statement.executeQuery("select * from person");
-            while(rs.next())
-            {
-                // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
-            }
-        }
-        catch(SQLException e)
-        {
-            // if the error message is "out of memory",
-            // it probably means no database file is found
-            System.err.println(e.getMessage());
-        }
-        finally
-        {
-            try
-            {
-                if(connection != null)
-                    connection.close();
-            }
-            catch(SQLException e)
-            {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-    }
-}*/
